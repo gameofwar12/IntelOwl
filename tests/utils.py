@@ -15,6 +15,7 @@ from api_app.script_analyzers.observable_analyzers import (
     urlhaus,
     googlesf,
     fortiguard,
+    intelx,
 )
 
 from .mock_utils import mock_connections, mocked_requests_noop
@@ -67,6 +68,16 @@ class CommonTestCases_observables(metaclass=ABCMeta):
     def test_pulsevide(self, mock_get=None, mock_post=None):
         report = pulsedive.Pulsedive(
             "Pulsedive_Active_IOC",
+            self.job_id,
+            self.observable_name,
+            self.observable_classification,
+            {},
+        ).start()
+        self.assertEqual(report.get("success", False), True)
+
+    def test_intelx(self, mock_get=None, mock_post=None):
+        report = intelx.IntelX(
+            "IntelX_Phonebook",
             self.job_id,
             self.observable_name,
             self.observable_classification,
